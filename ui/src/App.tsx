@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import queenOfBokNFT from "./utils/QueenOfBokNFT.json";
-import bokImage from "./assets/bokNFT.jpeg";
+import bokImage from "./assets/bokNFT.png";
 
-const CONTRACT_ADDRESS = "0x3219fD065B847F5266e37dD83C90090B8674e110";
+const CONTRACT_ADDRESS = "0xb212892cd1124eCb4eE4EE43EcbC4e6C0B7728eB";
 
 const App = () => {
 
@@ -23,7 +23,6 @@ const App = () => {
 
     if (accounts.length !== 0) {
       const account = accounts[0];
-      console.log("Found an authorized account:", account);
       setCurrentAccount(account)
 
       setupEventListener()
@@ -43,7 +42,6 @@ const App = () => {
 
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
 
-      console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
 
       setupEventListener()
@@ -61,13 +59,10 @@ const App = () => {
         const signer = provider.getSigner();
         const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, queenOfBokNFT.abi, signer);
 
-        connectedContract.on("NewEpicNFTMinted", (from, tokenId) => {
+        connectedContract.on("NewNFTMinted", (from, tokenId) => {
           console.log(from, tokenId.toNumber())
           alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
         });
-
-        console.log("Setup event listener!")
-
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -86,9 +81,11 @@ const App = () => {
         const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, queenOfBokNFT.abi, signer);
 
         console.log("Going to pop wallet now to pay gas...")
-        let nftTxn = await connectedContract.mintNFT();
+        let nftTxn = await connectedContract.mintNFT({
+          gasLimit: 3000000,
+          value: ethers.utils.parseEther("0.1"),
+        });
 
-        console.log("Mining...please wait.")
         await nftTxn.wait();
         console.log(nftTxn);
         console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`);
@@ -106,28 +103,33 @@ const App = () => {
   }, [])
 
   const renderNotConnectedContainer = () => (
-    <button onClick={connectWallet} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+    <button onClick={connectWallet} className="text-xl text-slate-50 bg-red-500 hover:bg-red-400 font-bold py-4 px-24 rounded mt-4 font-noto">
       Connect to Wallet
     </button>
   );
 
   const renderMintUI = () => (
-    <button onClick={askContractToMintNft} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-      Mint NFT
+    <button onClick={askContractToMintNft} className="text-xl text-slate-50 bg-yellow-500 hover:bg-yellow-400 font-bold py-4 px-24 rounded mt-4 font-noto">
+      Mint Bok
     </button>
   )
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white">
-        <img className="w-full" src={bokImage} alt="bok NFT Image" />
-        <div className="px-4 py-4">
-          <div className="font-bold text-xl mb-2">The Queen of Bok NFT</div>
-          <p className="text-gray-700 text-base">
-            NFT alpha room for investment.
-          </p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black p-4 text-center">
+      <div className="container xl flex flex-col">
+        <div className="flex flex-col items-center justify-center mb-8">
+          <h1 className="text-7xl text-slate-50 font-bold tracking-wider font-noto">Queen Of Bok</h1>
+          <p className="text-slate-50 font-noto pt-4">No Utility</p>
+          <p className="text-indigo-600 font-noto pt-1">Mint Price <b>1ETH</b></p>
         </div>
-        <div className="px-4 pb-2">
+        <div className="flex flex-col items-center justify-center mb-4">
+          <img className="w-96 h-96 rounded" src={bokImage} alt="bok NFT Image" />
+        </div>
+        <div className="flex flex-col items-center justify-center mb-4">
+          {currentAccount.length !== 0 ? <p className="text-green-500 text-sm font-noto">Wallet connection complete</p> : <p className="text-red-500 text-sm font-noto">Wallet not connected.</p>}
+          <p className="text-slate-50 font-noto">{currentAccount}</p>
+        </div>
+        <div className="flex justify-center">
           {currentAccount === "" ? renderNotConnectedContainer() : renderMintUI()}
         </div>
       </div>

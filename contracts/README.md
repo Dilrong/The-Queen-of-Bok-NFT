@@ -13,4 +13,5 @@ ETHERSCAN_KEY=
 
 ```
 npx hardhat run scripts/deploy.ts --network goerli
+npx hardhat run scripts/deploy.ts --network rinkeby
 ```

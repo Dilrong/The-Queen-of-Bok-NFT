@@ -11,7 +11,7 @@ contract QueenOfBokNFT is ERC721, ERC721URIStorage {
     Counters.Counter private _tokenIdCounter;
 
     uint256 public constant maxSupply = 101;
-    uint256 public constant mintPrice = 0.1 ether;
+    uint256 public constant mintPrice = 1 ether;
 
     event NewNFTMinted(address sender, uint256 tokenId);
 
@@ -22,7 +22,7 @@ contract QueenOfBokNFT is ERC721, ERC721URIStorage {
     }
 
     function mintNFT() public payable {
-        address devFund = address(0x5f490899aB8c3DCC12590a1BE3375e95b3104168);
+        address devFund = address(0x16d2E836DFd8b362B7791C38238c9256CA9154E0);
 
         require(msg.value == mintPrice, "WRONG_PRICE");
         (bool sent, ) = payable(devFund).call{value: msg.value}("");

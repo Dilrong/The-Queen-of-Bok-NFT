@@ -7,7 +7,7 @@ describe("QueenOfBokNFT", function () {
 
     const hardhatQueenOfBokNFT = await QueenOfBokNFT.deploy();
 
-    await expect(await hardhatQueenOfBokNFT.mintNFT({ value: ethers.utils.parseEther("0.1"), })).to.emit(hardhatQueenOfBokNFT, "NewNFTMinted");
+    await expect(await hardhatQueenOfBokNFT.mintNFT({ value: ethers.utils.parseEther("1"), })).to.emit(hardhatQueenOfBokNFT, "NewNFTMinted");
   });
 
 });

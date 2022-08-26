@@ -83,7 +83,7 @@ const App = () => {
         console.log("Going to pop wallet now to pay gas...")
         let nftTxn = await connectedContract.mintNFT({
           gasLimit: 3000000,
-          value: ethers.utils.parseEther("0.1"),
+          value: ethers.utils.parseEther("1"),
         });
 
         await nftTxn.wait();

@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import queenOfBokNFT from "./utils/QueenOfBokNFT.json";
 import bokImage from "./assets/bokNFT.png";
 
-const CONTRACT_ADDRESS = "0xb212892cd1124eCb4eE4EE43EcbC4e6C0B7728eB";
+const CONTRACT_ADDRESS = "0x23342a2c6201883885845cF5b41b26D17CcD596A";
 
 const App = () => {
 
@@ -61,7 +61,7 @@ const App = () => {
 
         connectedContract.on("NewNFTMinted", (from, tokenId) => {
           console.log(from, tokenId.toNumber())
-          alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
+          alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
         });
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -88,7 +88,7 @@ const App = () => {
 
         await nftTxn.wait();
         console.log(nftTxn);
-        console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`);
+        console.log(`Mined, see transaction: https://etherscan.io/tx/${nftTxn.hash}`);
 
       } else {
         console.log("Ethereum object doesn't exist!");

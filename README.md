@@ -1,3 +1,1 @@
-# The Queen of Bok NFT
-
-NFT alpha room for investment.
+# Bok.xyz NFT v1

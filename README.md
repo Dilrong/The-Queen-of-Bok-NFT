@@ -1,1 +1,1 @@
-# Bok.xyz NFT v1
+# Bok.xyz NFT v0
